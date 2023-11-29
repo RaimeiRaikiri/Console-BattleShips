@@ -46,6 +46,7 @@ void ExplainCoordinates()
     Console.WriteLine("then it's Y coordinate 1-10 (vertical)");
 }
 int[,] playerOneShipCoordinates = new int[3, 2];
+int whoseTurnCounter = 1;
 void PlayerShipCoordinates(int whoseTurnCounter)
 {
     int whichPlayer = 0;
@@ -60,10 +61,65 @@ void PlayerShipCoordinates(int whoseTurnCounter)
     }
     Console.WriteLine();
     Console.WriteLine($"Player {whichPlayer} choose X coordinate {howManyCoordinatesCounter}");
-    int xCoordinate = int.Parse(Console.ReadLine());
+    int xCoordinate = GetCoordinateInput();
+    CheckCorrectCoordinates(xCoordinate);
+    LoopCoordinatesUntilCorrect(xCoordinate);
     playerOneShipCoordinates[howManyCoordinatesCounter, 1] = xCoordinate;
     Console.WriteLine();
 }
+int GetCoordinateInput()
+{
+    string? usersChoice = Console.ReadLine();
+    if (int.TryParse(usersChoice, out int number))
+    {
+        return number;
+    }
+    else
+    {
+        Console.WriteLine("You have not entered an integer");
+        return 11;
+    }
+}
+
+bool CheckCorrectCoordinates(int coordinate)
+{
+    if (coordinate < 11 && coordinate > 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+}
+void LoopCoordinatesUntilCorrect(int coordinate)
+{
+    // Constraints being checked
+    bool inputBetween1and10 = CheckCorrectCoordinates(coordinate);
+    if (inputBetween1and10 == false)
+    {
+        while (inputBetween1and10 == false)
+        {
+            Console.WriteLine("Your input was not from 1-10, try again.");
+            coordinate = GetCoordinateInput();
+            inputBetween1and10 = CheckCorrectCoordinates(coordinate);
+            if (inputBetween1and10 == true)
+            {
+                break;
+            }
+            else
+            {
+                continue;
+            }
+
+        }
+    }
+
+}
+Introduction();
+PrintInitialBoard();
+PlayerShipCoordinates(whoseTurnCounter);
 
 //Create method for initialising a battle ship with a length of 3 for each player
 
